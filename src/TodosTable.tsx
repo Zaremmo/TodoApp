@@ -1,39 +1,78 @@
+import { SingleTodo, useTodoContext } from "./TodoContext";
+
+const PRIORITY_COLORS = {
+  low: "text-success",
+  medium: "text-warning",
+  high: "text-error",
+};
+
 function TododsTable() {
-    return <div className="overflow-x-auto">
-    <table className="table">
-      {/* head */}
-      <thead>
-        <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Job</th>
-          <th>Favorite Color</th>
-        </tr>
-      </thead>
-      <tbody>
-        {/* row 1 */}
-        <tr>
-          <th>1</th>
-          <td>Cy Ganderton</td>
-          <td>Quality Control Specialist</td>
-          <td>Blue</td>
-        </tr>
-        {/* row 2 */}
-        <tr>
-          <th>2</th>
-          <td>Hart Hagerty</td>
-          <td>Desktop Support Technician</td>
-          <td>Purple</td>
-        </tr>
-        {/* row 3 */}
-        <tr>
-          <th>3</th>
-          <td>Brice Swyre</td>
-          <td>Tax Accountant</td>
-          <td>Red</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  const { todosList, setCurrentTodo } = useTodoContext();
+
+  function handleEditTodo(todo: SingleTodo) {
+    if (setCurrentTodo) {
+      setCurrentTodo(todo);
+    }
+  }
+  return (
+    <div className="overflow-x-auto w-1/2">
+      <table className="table table-lg w-full">
+        {/* head */}
+        <thead>
+          <tr>
+            <th></th>
+            <th>Description</th>
+            <th>Deadline Date</th>
+            <th>Priority</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {todosList.map((todo, index) => {
+            return (
+              <tr
+                key={"todo" + index}
+                className="hover"
+              >
+                <th>{index + 1}</th>
+                <td>{todo.description}</td>
+                <td>{todo.date}</td>
+                <td
+                  className={
+                    PRIORITY_COLORS[
+                      todo.priority === "low" ||
+                      todo.priority === "medium" ||
+                      todo.priority === "high"
+                        ? todo.priority
+                        : "low"
+                    ]
+                  }
+                >
+                  {todo.priority}
+                </td>
+                <td>
+                  <div className="join">
+                    <button
+                      className="btn-xs btn btn-info join-item"
+                      onClick={() => handleEditTodo(todo)}
+                    >
+                      Edit
+                    </button>
+                    <button className="btn-xs btn btn-success join-item">
+                      Done
+                    </button>
+
+                    <button className="btn-xs btn btn-error join-item">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
-export default TododsTable
+export default TododsTable;
