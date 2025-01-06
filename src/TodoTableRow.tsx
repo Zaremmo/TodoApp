@@ -1,11 +1,11 @@
-import React from "react";
 import { SingleTodo, useTodoContext } from "./TodoContext";
-const PRIORITY_COLORS = ["text-success", "text-warning", "text-error"];
 
 type TodoTableRowProps = {
   todo: SingleTodo;
   index: number;
 };
+const PRIORITY_LEVELS = ["low", "medium", "high"];
+const PRIORITY_COLORS = ["text-success", "text-warning", "text-error"];
 
 function TodoTableRow(props: TodoTableRowProps) {
   const { todo, index } = props;
@@ -34,7 +34,9 @@ function TodoTableRow(props: TodoTableRowProps) {
       <th>{index + 1}</th>
       <td className={todo.done ? "line-through" : ""}>{todo.description}</td>
       <td>{todo.date}</td>
-      <td className={PRIORITY_COLORS[todo.priority - 1]}>{todo.priority}</td>
+      <td className={PRIORITY_COLORS[todo.priority - 1]}>
+        {PRIORITY_LEVELS[todo.priority - 1]}
+      </td>
       <td>
         <div className="join">
           {!todo.done ? (
