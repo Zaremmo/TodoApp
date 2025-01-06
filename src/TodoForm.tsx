@@ -1,18 +1,17 @@
-import { FormEvent } from "react";
 import { useTodoContext } from "./TodoContext";
-import { SingleTodo } from "./TodoContext";
 function TodoForm() {
-  const { currentTodo, addTodo, updateTodo } = useTodoContext();
+  const { currentTodo, addTodo, updateTodo, setCurrentTodo } = useTodoContext();
   function handleSubmit(formEvent: React.FormEvent<HTMLFormElement>) {
     formEvent.preventDefault();
     const formData = new FormData(formEvent.currentTarget);
     const description = formData.get("description")?.toString();
     const date = formData.get("date")?.toString();
-    const priority = formData.get("priority")?.toString();
+    const priorityValue = formData.get("priority")?.toString() ?? "1";
+    const priority = parseInt(priorityValue);
     if (
       !description?.length ||
       !date?.length ||
-      !priority?.length ||
+      !priority ||
       !addTodo ||
       !updateTodo
     ) {
@@ -38,9 +37,20 @@ function TodoForm() {
   }
   return (
     <form
-      className="flex flex-col w-1/2"
+      className="flex flex-col mt-5"
       onSubmit={handleSubmit}
     >
+      <button
+        className="btn mb-4 w-fit btn-success"
+        type="reset"
+        onClick={() => {
+          if (setCurrentTodo) {
+            setCurrentTodo(null);
+          }
+        }}
+      >
+        New todo
+      </button>
       <h3 className="mb-5">
         {currentTodo ? "Edit " + currentTodo.description : "Add new todo"}
       </h3>
@@ -75,19 +85,19 @@ function TodoForm() {
           Task priority
         </option>
         <option
-          value="low"
+          value="1"
           className="text-success"
         >
           Low
         </option>
         <option
-          value="medium"
+          value="2"
           className="text-warning"
         >
           Medium
         </option>
         <option
-          value="high"
+          value="3"
           className="text-error"
         >
           High
@@ -95,7 +105,7 @@ function TodoForm() {
       </select>
       <button
         type="submit"
-        className="btn btn-primary max-w-xs"
+        className="btn btn-primary w-fit"
       >
         Submit
       </button>

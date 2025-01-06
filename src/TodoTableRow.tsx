@@ -1,10 +1,6 @@
 import React from "react";
 import { SingleTodo, useTodoContext } from "./TodoContext";
-const PRIORITY_COLORS = {
-  low: "text-success",
-  medium: "text-warning",
-  high: "text-error",
-};
+const PRIORITY_COLORS = ["text-success", "text-warning", "text-error"];
 
 type TodoTableRowProps = {
   todo: SingleTodo;
@@ -38,19 +34,7 @@ function TodoTableRow(props: TodoTableRowProps) {
       <th>{index + 1}</th>
       <td className={todo.done ? "line-through" : ""}>{todo.description}</td>
       <td>{todo.date}</td>
-      <td
-        className={
-          PRIORITY_COLORS[
-            todo.priority === "low" ||
-            todo.priority === "medium" ||
-            todo.priority === "high"
-              ? todo.priority
-              : "low"
-          ]
-        }
-      >
-        {todo.priority}
-      </td>
+      <td className={PRIORITY_COLORS[todo.priority - 1]}>{todo.priority}</td>
       <td>
         <div className="join">
           {!todo.done ? (
