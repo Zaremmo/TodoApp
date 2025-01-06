@@ -14,6 +14,7 @@ type ContextTypes = {
   addTodo?: (params: SingleTodo) => void;
   updateTodo?: (params: SingleTodo) => void;
   setCurrentTodo?: (params: SingleTodo | null) => void;
+  removeTodo?: (params: SingleTodo) => void;
 };
 
 const TodoContext = createContext<ContextTypes>({
@@ -30,6 +31,7 @@ const TodosContextProvider = (props: { children: JSX.Element }) => {
       type: ACTIONS.ADD,
       payload: todo,
     });
+    setCurrentTodo(todo);
   }
   function updateTodo(todo: SingleTodo) {
     dispatch({
@@ -37,10 +39,26 @@ const TodosContextProvider = (props: { children: JSX.Element }) => {
       payload: todo,
     });
   }
+  function removeTodo(todo: SingleTodo) {
+    if (todo.id === currentTodo?.id) {
+      setCurrentTodo(null);
+    }
+    dispatch({
+      type: ACTIONS.REMOVE,
+      payload: todo,
+    });
+  }
 
   return (
     <TodoContext.Provider
-      value={{ todosList, currentTodo, addTodo, updateTodo, setCurrentTodo }}
+      value={{
+        todosList,
+        currentTodo,
+        addTodo,
+        updateTodo,
+        removeTodo,
+        setCurrentTodo,
+      }}
     >
       {props.children}
     </TodoContext.Provider>

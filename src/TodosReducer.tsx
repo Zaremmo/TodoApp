@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { SingleTodo } from "./TodoContext";
 
 const ACTIONS = {
   ADD: "ADD",
@@ -6,17 +6,25 @@ const ACTIONS = {
   REMOVE: "REMOVE",
 };
 
-function todosReducer(state: any, action: any) {
-  console.log(state, action);
-
+function todosReducer(
+  state: any,
+  action: { type: string; payload: SingleTodo }
+) {
   switch (action.type) {
     case ACTIONS.ADD:
-      console.log([...state, action.payload]);
       return [...state, action.payload];
     case ACTIONS.UPDATE:
-      break;
+      return state.map((todo: SingleTodo) => {
+        if (todo.id === action.payload.id) {
+          return action.payload;
+        } else {
+          return todo;
+        }
+      });
+
     case ACTIONS.REMOVE:
-      break;
+      return state.filter((todo: SingleTodo) => todo.id !== action.payload.id);
+
     default:
       return state;
   }

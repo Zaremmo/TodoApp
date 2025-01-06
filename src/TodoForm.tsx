@@ -38,7 +38,7 @@ function TodoForm() {
   }
   return (
     <form
-      className="flex flex-col w-1/3"
+      className="flex flex-col w-1/2"
       onSubmit={handleSubmit}
     >
       <h3 className="mb-5">
@@ -97,7 +97,7 @@ function TodoForm() {
         type="submit"
         className="btn btn-primary max-w-xs"
       >
-        Add
+        Submit
       </button>
     </form>
   );
